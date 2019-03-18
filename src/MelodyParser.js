@@ -20,9 +20,7 @@ class MelodyParser {
             const playStrategy = InputParser.checkStrategy(line);
             switch(playStrategy[0]) {
                 case 'play':
-                    line = InputParser.removeStrategyName(line);
-                    line = InputParser.parseNoteNotation(line);
-                    this.melodyQueue.enqueueTone(durations[line[1]], [note(line[0])]);
+                    InputParser.parseLine(line).map(parsedNote => this.melodyQueue.enqueueTone(durations[parsedNote[1]], [note(parsedNote[0])]));
                     continue;
             }
         }
