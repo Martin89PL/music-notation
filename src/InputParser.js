@@ -48,12 +48,19 @@ class InputParser {
     }
     
     /**
-     * How many times
+     * How many times repeat
      * @param {string} line 
      */
     static repeat(line) {
         let result =  line.split(' ', 3);
         return result[1];
+    }
+    /**
+     * Return function name
+     * @param {string} line 
+     */
+    static define(line) {
+        return line.split(' ', 1);
     }
 }
 
