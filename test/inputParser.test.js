@@ -44,9 +44,6 @@ describe('testParser', () => {
     test('test return parsed array when input line has repeat', () => {
         const input = 'note(F4, Q) | repeat 2 times note(D4, Q)';
         const expected = InputParser.parseLine(input);
-
-        console.log(expected);
-
         expect(Array.isArray(expected)).toBe(true);
         expect(expected.length).toBe(3);
     });
