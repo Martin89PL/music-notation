@@ -54,4 +54,11 @@ describe('testParser', () => {
         expect(Array.isArray(expected)).toBe(true);
     });
 
+    test('test should return array when input line has pause', () => {
+        const input = 'pause(HT) | note(A3, E)';
+        const expected = InputParser.parseLine(input);
+        expect(Array.isArray(expected)).toBe(true);
+        expect(expected.length).toBe(2);
+    });
+
   });
