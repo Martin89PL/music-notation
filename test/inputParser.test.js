@@ -60,5 +60,16 @@ describe('testParser', () => {
         expect(Array.isArray(expected)).toBe(true);
         expect(expected.length).toBe(2);
     });
-
+    test('test should parse define strategy and parse it', () => {
+        const input = 'define mel01 is pause(HT) | note(E5, E)';
+        const strategy = InputParser.checkStrategy(input);
+        expect(strategy[0]).toBe('define');
+        const line = InputParser.removeStrategyName(input, strategy[0]);
+        expect(line).toBe('mel01 is pause(HT) | note(E5, E)');
+        const define = InputParser.define(line);
+        expect(define[0]).toBe('mel01');
+        const parsed = InputParser.parseLine(line);
+        expect(Array.isArray(parsed)).toBe(true);
+        expect(parsed.length).toBe(2);
+    });
   });
