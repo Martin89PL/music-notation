@@ -1,15 +1,12 @@
-const durations = require('./durations.js');
 const MelodyQueue = require('./MelodyQueue.js');
-const waveGenerator = require('./WaveGenerator.js');
 const note = require('./note.js');
+const MelodyParser = require('./MelodyParser');
 
 class MelodyGenerator
 {
     fromString(melodyString) {
-        // put your code here
-        let melody = new MelodyQueue();
-        melody.enqueueTone(durations.Q, note('A4'));
-        return melody;
+        const parser = new MelodyParser(melodyString, new MelodyQueue());
+        return parser.play();
     }
 
     getNotesArray(notes) {
