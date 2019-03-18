@@ -17,10 +17,17 @@ class MelodyParser {
     play() {
 
         for(let line of this.melodyNotation) {
-            const playStrategy = InputParser.checkStrategy(line);
-            switch(playStrategy[0]) {
+            const strategy = InputParser.checkStrategy(line);
+            switch(strategy[0]) {
                 case 'play':
-                    InputParser.parseLine(line).map(parsedNote => this.melodyQueue.enqueueTone(durations[parsedNote[1]], [note(parsedNote[0])]));
+                    InputParser.parseLine(line).map(parsedNote => {
+                        if(parsedNote.length === 1) {
+                            this.melodyQueue.enqueuePause(durations[parsedNote[0]])
+                        } else {
+                            this.melodyQueue.enqueueTone(durations[parsedNote[1]], [note(parsedNote[0])]);
+                        }
+
+                    });
                     continue;
             }
         }
