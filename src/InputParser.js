@@ -20,16 +20,20 @@ class InputParser {
      * @param {string} line 
      */
     static parseLine(line) {
+        line = InputParser.removeStrategyName(line);
         let parsed = line.split('|').map(note => note.trim());
         let notesLine = [];
+
         for(let parse of parsed) {
             let result = parse.match(/repeat/g);
             if(result != null && result[0] === 'repeat') {
-                // parse repeat strategy
-                console.log(InputParser.repeat(parse));
-                console.log(InputParser.parseNoteNotation(parse));
+                let howMany = InputParser.repeat(parse);
+                for(let i = 0; i < howMany; i++) {
+                    notesLine.push(InputParser.parseNoteNotation(parse));
+                }
+                continue;
             }
-            notesLine.push(parse);
+            notesLine.push(InputParser.parseNoteNotation(parse));
         }
 
         return notesLine;
@@ -44,10 +48,12 @@ class InputParser {
     }
     
     /**
+     * How many times
      * @param {string} line 
      */
     static repeat(line) {
-        return line.split(' ', 3);
+        let result =  line.split(' ', 3);
+        return result[1];
     }
 }
 
