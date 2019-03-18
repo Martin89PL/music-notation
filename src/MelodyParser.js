@@ -19,6 +19,7 @@ class MelodyParser {
         for(let line of this.melodyNotation) {
             const strategy = InputParser.checkStrategy(line);
             switch(strategy[0]) {
+                // define have to before play - save memory
                 case 'play':
                     InputParser.parseLine(line).map(parsedNote => {
                         if(parsedNote.length === 1) {
@@ -28,7 +29,7 @@ class MelodyParser {
                         }
 
                     });
-                    continue;
+                    continue;            
             }
         }
 
