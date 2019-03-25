@@ -18,13 +18,10 @@ class InputParser {
 
     /**
      * @param {string} line 
+     * 
      */
     static parseLine(line) {
-        
-        line = InputParser.removeStrategyName(line);
-        return line.split('|')
-                .map(note => note.trim())
-                .map(note => InputParser.parseNoteNotation(note));
+        return InputParser.removeStrategyName(line).split('|').map(note => note.trim()).map(note => InputParser.parseNoteNotation(note));   
     }
 
     /**
@@ -34,9 +31,19 @@ class InputParser {
     static parseNoteNotation(note) {
         let values = note.match(/\((.*?)\)/g)[0].replace('(', '').replace(')', '');
         
-        return values.split(',')
+        let notationType = note.match(/note|pause/g)[0];
+
+        let repeatNumber = (note.match(/repeat/g)) ? parseInt(note.split(' ')[1]) : 0
+        
+        let result = values.split(',')
                 .map(note => note.trim())
                 .map(note => note.split(';'))
+        // @TODO Literal object to class!
+        return {
+            type: notationType, 
+            repeat: repeatNumber,
+            notation: result
+        };    
     }
     
     /**
