@@ -41,25 +41,6 @@ describe('testParser', () => {
         expect(expected.length).toBe(3);
     });
 
-    test('test return parsed array when input line has repeat', () => {
-        const input = 'note(F4, Q) | repeat 2 times note(D4, Q)';
-        const expected = InputParser.parseLine(input);
-        expect(Array.isArray(expected)).toBe(true);
-        expect(expected.length).toBe(3);
-    });
-
-    test('test should return value in note notation', () => {
-        const input = 'note(G4, Q)';
-        const expected = InputParser.parseNoteNotation(input);
-        expect(Array.isArray(expected)).toBe(true);
-    });
-
-    test('test should return array when input line has pause', () => {
-        const input = 'pause(HT) | note(A3, E)';
-        const expected = InputParser.parseLine(input);
-        expect(Array.isArray(expected)).toBe(true);
-        expect(expected.length).toBe(2);
-    });
     test('test should parse define strategy and parse it', () => {
         const input = 'define mel01 is pause(HT) | note(E5, E)';
         const strategy = InputParser.checkStrategy(input);
@@ -72,4 +53,35 @@ describe('testParser', () => {
         expect(Array.isArray(parsed)).toBe(true);
         expect(parsed.length).toBe(2);
     });
+
+    test('test should return array when input line has pause', () => {
+        const input = 'pause(HT) | note(A3, E)';
+        const expected = InputParser.parseLine(input);
+        expect(expected).toEqual([{notation: [["HT"]], type: "pause", repeat: 0}, {notation: [["A3"], ["E"]], type: "note", repeat: 0}])
+    });
+
+    test('recognize note notation 3 tones to play in the same time', () => {
+        const input = 'note(C4;E4;G4, E)';
+        const expected = InputParser.parseNoteNotation(input);
+        expect(expected).toEqual({notation: [["C4", "E4", "G4"], ["E"]], type: "note", repeat: 0});
+    });
+
+    test('recognize note notation 1 tones', () => {
+        const input = 'note(C4, E)';
+        const expected = InputParser.parseNoteNotation(input);
+        expect(expected).toEqual({ notation: [['C4'], ['E']], type: "note", repeat: 0});
+    });
+
+    test('recognize note notation 1 pause', () => {
+        const input = 'pause(HT)';
+        const expected = InputParser.parseNoteNotation(input);
+        expect(expected).toEqual({notation: [["HT"]], type: "pause", repeat: 0});
+    });
+
+    test('recognize note notation with repeat', () => {
+        const input = 'repeat 2 times note(D4, Q)';
+        const expected = InputParser.parseNoteNotation(input);
+        expect(expected).toEqual({ notation: [['D4'], ['Q']], type: "note", repeat: 2});
+    });
   });
+  
