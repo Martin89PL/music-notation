@@ -17,14 +17,22 @@ class MelodyParser {
         this.defines = [];
     }
 
-    play() {
+    defines() {
+        // define mel01 is pause(HT) | note(E5, E)
+        // play repeat 3 times mel01 -> array below! when 3 times, every element repeat 3 times!
+        // parsed: note(F4, Q) | repeat 2 times note(D4, Q)
+        // [ { type: 'note', repeat: 0, notation: [ [Array], [Array] ] },
+        //   { type: 'note', repeat: 2, notation: [ [Array], [Array] ] } ]
+        return true;
+    }
 
+    play() {
         this.melodyNotation
         .filter(line => {
             return InputParser.checkStrategy(line)[0] === KeyWords.PLAY
         })
         .map(line => {
-            this.melodyResolver.resolve(InputParser.parseLine(line))
+            InputParser.parseLine(line).map(parsed => this.melodyResolver.resolve(parsed))
         });    
         
         return this.melodyResolver.getMelodyQueue();
